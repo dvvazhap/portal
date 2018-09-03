@@ -3,7 +3,7 @@ let logger = require('./log/logModule');
 var con = require('./db');
 
 exports.validateUser = function (email, req, res) {
-    let sql = "select token from users where email = '" + email + "'";
+    let sql = "select token, v_profile from users where email = '" + email + "'";
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in validateEmail", error.sqlMessage);
@@ -12,7 +12,11 @@ exports.validateUser = function (email, req, res) {
             if (result.length == 0) {
                 res.status(200).send("nodata");
             } else {
-                res.status(200).send("duplicate");
+                if(result[0].v_profile != 1){
+                    res.status(200).send("not_valid");
+                }else{
+                    res.status(200).send("valid");
+                }
             }
         }
     });
@@ -80,7 +84,6 @@ exports.resetPassword = function (body, res) {
         }
     });
 }
-
 
 exports.checkUser = function (body, res) {
     let sql = "SELECT token,user_type,v_profile, COUNT(`email`) AS count from `users` where email = '" + body.email + "' AND password='" + body.password + "'";
