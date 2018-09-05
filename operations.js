@@ -28,7 +28,7 @@ exports.postRequirements = function (body, res) {
 
 exports.updateRequirement = function (body, res) {
     let data = JSON.parse(body.obj);
-    let sql = "UPDATE `openings` SET email = '" + data.email + "', fullTime= '" + data.fullTime + "', partTime= '" + data.partTime + "', intern = '" + data.intern + "', designation= '" + data.designation + "', company= '" + data.company + "', location= '" + data.location + "', contact= '" + data.contact + "',	min_years = '" + data.min_years + "',max_years = '" + data.max_years + "', skills= '" + data.skills + "', specificReq= '" + data.specificReq + "', noticePeriod= '" + data.noticePeriod + "' WHERE ind = '" + data.ind + "'";
+    let sql = "UPDATE `openings` SET email = '" + data.email + "', fullTime= '" + data.fullTime + "', partTime= '" + data.partTime + "', intern = '" + data.intern + "', designation= '" + data.designation + "', company= '" + data.company + "', location= '" + data.location + "', contact= '" + data.contact + "',	min_years = '" + data.min_years + "',max_years = '" + data.max_years + "', skills= '" + data.skills + "', specificReq= '" + data.specificReq + "', noticePeriod= '" + data.noticePeriod + "', gender= '" + data.gender + "', count= '" + data.count + "' WHERE ind = '" + data.ind + "'";
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in updateRequirement", error);
@@ -117,7 +117,7 @@ exports.jobsPostedByMe = function (body, res) {
 }
 
 exports.getOpenings = function (res) {
-    let sql = "SELECT ind,timestamp, email,fullTime,partTime,intern,designation,company,location,contact,min_years,max_years,skills,specificReq,noticePeriod FROM openings ORDER BY timestamp DESC";
+    let sql = "SELECT ind,timestamp, email,fullTime,partTime,intern,designation,company,location,contact,min_years,max_years,skills,specificReq,noticePeriod,gender,count,viewers FROM openings ORDER BY timestamp DESC";
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in getOpenings", error);
@@ -129,7 +129,7 @@ exports.getOpenings = function (res) {
 }
 
 exports.getOpeningsById = function (body,res) {
-    let sql = "SELECT ind,timestamp, email,fullTime,partTime,intern,designation,company,location,contact,min_years,max_years,skills,specificReq,noticePeriod FROM openings WHERE ind ='"+body.ind+"'";
+    let sql = "SELECT ind,timestamp, email,fullTime,partTime,intern,designation,company,location,contact,min_years,max_years,skills,specificReq,noticePeriod,gender,count,viewers FROM openings WHERE ind ='"+body.ind+"'";
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in getOpeningsById", error);
