@@ -53,8 +53,20 @@ exports.resetPasswordLink = function (body, res) {
             logger.log("error", "Error in resetPasswordLink", error1.sqlMessage);
             res.status(500).send(error1.sqlMessage);
         } else if (result1) {
-            email.resetPasswordLink(body.email, r);
-            res.status(200).send(result1.changedRows.toString());
+            let sql2 = "SELECT name FROM users WHERE email = '" + body.email + "'";
+            let name = body.email;
+            con.query(sql2, (error2, result2, field2) => {
+                if (error2) {
+                    logger.log("error", "Error in fetching name - resetPasswordLink", error2.sqlMessage);
+                    res.status(500).send(error2.sqlMessage);
+                }
+                else if(result2){
+                    name = result2[0].name;
+                }
+                email.resetPasswordLink(name, body.email, r);
+                res.status(200).send(result1.changedRows.toString());
+            })
+            
         }
     });
 }
@@ -101,7 +113,7 @@ exports.checkUser = function (body, res) {
 
 exports.addUser = function (body, res) {
     let r = Math.floor(Math.random(1, 1000000000) * 5345354346) % 1000000000;
-    let data = { token: body.token, password: body.password, email: body.email, user_type: body.user_type, v_profile: r};
+    let data = { token: body.token, password: body.password, email: body.email, user_type: body.user_type, v_profile: r, name: body.name};
     // console.log("data",data);
     con.query("INSERT INTO `users` SET ? ", data, (error, result, field) => {
         if (error) {
@@ -109,9 +121,9 @@ exports.addUser = function (body, res) {
             res.status(500).end(error.sqlMessage);
         }
         else if (result) {
-            email.sendVerificationMail(body.email, body.token, r, body.user_type);
+            email.sendVerificationMail(body.name, body.email, body.token, r, body.user_type);
             if (body.user_type == 1) { //employer
-                con.query("INSERT INTO `employerinfo`(email) VALUES ('" + body.email + "')", (error1, result1, field1) => {
+                con.query("INSERT INTO `employerinfo`(email,name) VALUES ('" + body.email + "','" + body.name + "')", (error1, result1, field1) => {
                     if (error1) {
                         logger.log("error", "Error in adding entry to EMPLOYERINFO table", error1);
                         res.status(500).end(error1.sqlMessage);
@@ -122,7 +134,7 @@ exports.addUser = function (body, res) {
                 });
             }
             if (body.user_type == 2) { //employee
-                con.query("INSERT INTO `skills`(email) VALUES ('" + body.email + "')", (error1, result1, field1) => {
+                con.query("INSERT INTO `skills`(email,name) VALUES ('" + body.email + "','" + body.name + "')", (error1, result1, field1) => {
                     if (error1) {
                         logger.log("error", "Error in adding entry to SKILLS table", error1);
                         res.status(500).end(error1.sqlMessage);
@@ -146,7 +158,7 @@ exports.resendEmail = function (body, res) {
             logger.log("error", "Error in resendEmail", error.sqlMessage);
             res.status(500).send(error.sqlMessage);
         } else if (result) {
-            email.sendVerificationMail(body.email, result[0].token, result[0].v_profile, result[0].user_type);
+            email.sendVerificationMail(body.name, body.email, result[0].token, result[0].v_profile, result[0].user_type);
             res.status(200).send("send");
         }
     });
