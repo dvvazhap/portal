@@ -2,20 +2,6 @@ var con = require('./db');
 let email = require('./email');
 let logger = require('./log/logModule');
 
-/* users table*/
-exports.changePassword = function (body, res) {
-    let sql = "UPDATE `users` SET password='" + body.new_password + "' where token = '" + body.token + "' AND password = '" + body.old_password + "'";
-
-    con.query(sql, (error, result, field) => {
-        if (error) {
-            logger.log("error", "Error in changePassword", error.sqlMessage);
-            res.status(500).send(error.sqlMessage);
-        } else if (result) {
-            res.status(200).send(result.changedRows.toString());
-        }
-    });
-}
-
 /* employerinfo table */
 exports.getEmployerInfo = function (body, res) {
     let sql = "SELECT * from employerinfo where email = '" + body.email + "'";

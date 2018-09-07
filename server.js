@@ -50,12 +50,10 @@ try {
     .post('/getUserInfo', function (req, res) {
       authentication.getUserInfo(req.body, res);
     })
-
-    // operations services
-
     .post('/changePassword', function (req, res) {
-      operations.changePassword(req.body, res);
+      authentication.changePassword(req.body, res);
     })
+    // operations services
     .post('/postRequirements', function (req, res) {
       operations.postRequirements(req.body, res);
     })

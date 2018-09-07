@@ -144,9 +144,6 @@ exports.addUser = function (body, res) {
                     }
                 });
             }
-
-
-            
         }
     });
 }
@@ -177,3 +174,15 @@ exports.getUserInfo = function (body, res) {
     });
 }
 
+exports.changePassword = function (body, res) {
+    let sql = "UPDATE `users` SET password='" + body.new_password + "' where token = '" + body.token + "' AND password = '" + body.old_password + "'";
+
+    con.query(sql, (error, result, field) => {
+        if (error) {
+            logger.log("error", "Error in changePassword", error.sqlMessage);
+            res.status(500).send(error.sqlMessage);
+        } else if (result) {
+            res.status(200).send(result.changedRows.toString());
+        }
+    });
+}
