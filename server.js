@@ -75,13 +75,7 @@ try {
       operations.getEmployeeInfo(req.body, res);
     })
     .post('/getOpenings', function (req, res) {
-      operations.getOpenings(res);
-    })
-    .post('/getOpeningsById', function (req, res) {
-      operations.getOpeningsById(req.body, res);
-    })
-    .post('/jobsPostedByMe', function (req, res) {
-      operations.jobsPostedByMe(req.body, res);
+      operations.getOpenings(req,res);
     })
     .post('/deleteRequirement', function (req, res) {
       operations.deleteRequirement(req.body, res);
