@@ -73,7 +73,7 @@ try {
       operations.getEmployeeInfo(req.body, res);
     })
     .post('/getOpenings', function (req, res) {
-      operations.getOpenings(req,res);
+      operations.getOpenings(req.body,res);
     })
     .post('/deleteRequirement', function (req, res) {
       operations.deleteRequirement(req.body, res);

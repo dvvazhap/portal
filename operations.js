@@ -30,18 +30,19 @@ exports.setEmployerInfo = function (body, res) {
 
 /* openings table*/
 exports.getOpenings = function (body,res) {
-    let sql = "SELECT * FROM openings "
+    let sql = "SELECT * FROM openings ";
     if(body.email == "" && body.ind == "") sql+= "ORDER BY timestamp DESC";
     else if(body.email != "" && body.ind == "") sql+= "where email = '" + body.email + "' ORDER BY timestamp DESC";
     else if(body.email == "" && body.ind != "") sql+= "where ind = '" + body.ind + "' ORDER BY timestamp DESC";
     else{res.status(500).send("Trying to hack huh !!! Hard luck buddy");}
-
+    
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in getOpenings", error);
             res.status(500).send(error.sqlMessage);
         } else if (result) {
-            res.status(200).send(result);
+            if(result.length == 0) res.status(200).send('0');
+            else res.status(200).send(result);
         }
     });
 }
