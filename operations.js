@@ -112,7 +112,9 @@ exports.setEmployeeInfo = function (body, res) {
      "', partTime='" + data.partTime + "', intern='" + data.intern + "', designation='" + data.designation + "', company='" + data.company +
       "', cur_location='" + data.cur_location + "', fut_location='" + data.fut_location + "', experience='" + data.experience +
        "', noticePeriod='" + data.noticePeriod + "', degree='" + data.degree + "', stream='" + data.stream + "', institution='" + data.institution + 
-       "', passout='" + data.passout + "', skills='" + data.skills + "', specificReq='" + data.specificReq +"', gender='" + data.gender + "' where email = '" + body.email + "'", (error, result, field) => {
+       "', passout='" + data.passout + "', skills='" + data.skills + "', specificReq='" + data.specificReq +"', gender='" + data.gender +
+       "', objective='" + data.objective +"', languages='" + data.languages +"', acedemic_ach='" + data.acedemic_ach +"', extra_curricular='" + data.extra_curricular +
+       "', certifications='" + data.certifications +"', hobbies='" + data.hobbies +"', address='" + data.address +"', linkedin='" + data.linkedin + "' where email = '" + body.email + "'", (error, result, field) => {
         if (error) {
             logger.log("error", "Error in setEmployeeInfo", error);
             res.status(500).send(error.sqlMessage);
