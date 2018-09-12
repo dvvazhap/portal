@@ -12,9 +12,9 @@ exports.validateUser = function (email, req, res) {
             if (result.length == 0) {
                 res.status(200).send("nodata");
             } else {
-                if(result[0].v_profile != 1){
+                if (result[0].v_profile != 1) {
                     res.status(200).send("not_valid");
-                }else{
+                } else {
                     res.status(200).send("valid");
                 }
             }
@@ -60,13 +60,13 @@ exports.resetPasswordLink = function (body, res) {
                     logger.log("error", "Error in fetching name - resetPasswordLink", error2.sqlMessage);
                     res.status(500).send(error2.sqlMessage);
                 }
-                else if(result2){
+                else if (result2) {
                     name = result2[0].name;
                 }
                 email.resetPasswordLink(name, body.email, r);
                 res.status(200).send(result1.changedRows.toString());
             })
-            
+
         }
     });
 }
@@ -113,7 +113,7 @@ exports.checkUser = function (body, res) {
 
 exports.addUser = function (body, res) {
     let r = Math.floor(Math.random(1, 1000000000) * 5345354346) % 1000000000;
-    let data = { token: body.token, password: body.password, email: body.email, user_type: body.user_type, v_profile: r, name: body.name};
+    let data = { token: body.token, password: body.password, email: body.email, user_type: body.user_type, v_profile: r, name: body.name };
     // console.log("data",data);
     con.query("INSERT INTO `users` SET ? ", data, (error, result, field) => {
         if (error) {
@@ -123,23 +123,29 @@ exports.addUser = function (body, res) {
         else if (result) {
             email.sendVerificationMail(body.name, body.email, body.token, r, body.user_type);
             if (body.user_type == 1) { //employer
-                con.query("INSERT INTO `employerinfo`(email,name) VALUES ('" + body.email + "','" + body.name + "')", (error1, result1, field1) => {
+                let a = { name: body.name, email: body.email, phone: "", designation: "", org_name: "", city: "", phone: "" };
+                con.query("INSERT INTO `employerinfo` SET ? ", a, (error1, result1, field1) => {
                     if (error1) {
                         logger.log("error", "Error in adding entry to EMPLOYERINFO table", error1);
                         res.status(500).end(error1.sqlMessage);
                     } else if (result1) {
-                        if(result1.affectedRows.toString()=="1")
+                        if (result1.affectedRows.toString() == "1")
                             res.status(200).end("insert");
                     }
                 });
             }
             if (body.user_type == 2) { //employee
-                con.query("INSERT INTO `skills`(email,name) VALUES ('" + body.email + "','" + body.name + "')", (error1, result1, field1) => {
+                let a = {
+                    name: body.name, email: body.email, phone: "", looking: 0, fullTime: 1, partTime: 0, intern: 0, designation: "", fut_location: "", experience: 0,
+                    noticePeriod: 0, skills: "", specificReq: "", gender: 'Male', viewers: 1, objective: "", languages: "", academic_ach: "", extra_curricular: "", certifications: "", hobbies: "", address: "", linkedin: ""
+                };
+                con.query("INSERT INTO `skills` SET ? ", a, (error1, result1, field1) => {
                     if (error1) {
                         logger.log("error", "Error in adding entry to SKILLS table", error1);
+                        console.log("error :",error1)
                         res.status(500).end(error1.sqlMessage);
                     } else if (result1) {
-                        if(result1.affectedRows.toString()=="1")
+                        if (result1.affectedRows.toString() == "1")
                             res.status(200).end("insert");
                     }
                 });

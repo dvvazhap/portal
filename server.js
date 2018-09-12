@@ -72,6 +72,42 @@ try {
     .post('/getEmployeeInfo', function (req, res) {
       operations.getEmployeeInfo(req.body, res);
     })
+    .post('/addEducation', function (req, res) {
+      operations.addEducation(req.body, res);
+    })
+    .post('/getEducation', function (req, res) {
+      operations.getEducation(req.body, res);
+    })
+    .post('/updateEducation', function (req, res) {
+      operations.updateEducation(req.body, res);
+    })
+    .post('/deleteEducation', function (req, res) {
+      operations.deleteEducation(req.body, res);
+    })
+    .post('/addWork', function (req, res) {
+      operations.addWork(req.body, res);
+    })
+    .post('/getWork', function (req, res) {
+      operations.getWork(req.body, res);
+    })
+    .post('/updateWork', function (req, res) {
+      operations.updateWork(req.body, res);
+    })
+    .post('/deleteWork', function (req, res) {
+      operations.deleteWork(req.body, res);
+    })
+    .post('/addProject', function (req, res) {
+      operations.addProject(req.body, res);
+    })
+    .post('/getProject', function (req, res) {
+      operations.getProject(req.body, res);
+    })
+    .post('/updateProject', function (req, res) {
+      operations.updateProject(req.body, res);
+    })
+    .post('/deleteProject', function (req, res) {
+      operations.deleteProject(req.body, res);
+    })
     .post('/getOpenings', function (req, res) {
       operations.getOpenings(req.body,res);
     })
