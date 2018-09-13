@@ -95,7 +95,7 @@ exports.getCandidates = function (body, res) {
 }
 exports.getEmployeeInfo = function (body, res) {
     let sql = "SELECT * from skills where email = '" + body.email + "'";
-
+    
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in getEmployeeInfo", error.sqlMessage);
@@ -197,7 +197,7 @@ exports.addWork = function (body, res) {
             res.status(500).end(error.sqlMessage);
         } else if (result) {
             let max = result[0].max + 1
-            let data = { email: body.email, ind: max, company: '', description: '', start: '', end: '' };
+            let data = { email: body.email, ind: max, company: '', description: '', start: '', end: '',present: false };
             con.query("INSERT INTO `work_experience` SET ? ", data, (error1, result1, field) => {
                 if (error1) {
                     logger.log("error", "Error in inserting work_experience table", error1.sqlMessage);
@@ -224,7 +224,8 @@ exports.getWork = function (body, res) {
 }
 exports.updateWork = function (body, res) {
     let sql = "UPDATE `work_experience` SET " +
-        "company='" + body.company + "', description ='" + body.description + "', start ='" + body.start + "', end ='" + body.end + "' WHERE ind ='" + body.ind + "' AND email='" + body.email + "'";
+        "company='" + body.company + "', description ='" + body.description + "', start ='" + body.start + "', end ='" + body.end + "',present =" + body.present + " WHERE ind ='" + body.ind + "' AND email='" + body.email + "'";
+    
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in update work_experience:", error.sqlMessage);
