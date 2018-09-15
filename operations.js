@@ -65,7 +65,7 @@ exports.updateRequirement = function (body, res) {
     "', designation= '" + data.designation.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "', company= '" + data.company.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + 
     "', location= '" + data.location.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "', contact= '" + data.contact.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "',min_years = '" + data.min_years + 
     "',max_years = '" + data.max_years + "', skills= '" + data.skills.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "', specificReq= '" + data.specificReq.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + 
-    "', noticePeriod= '" + data.noticePeriod + "', gender= '" + data.gender + "', count= '" + data.count + "' WHERE ind = '" + data.ind + "'";
+    "', description= '" + data.description.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "', gender= '" + data.gender + "', count= '" + data.count + "' WHERE ind = '" + data.ind + "'";
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in updateRequirement", error);
@@ -240,7 +240,6 @@ exports.updateWork = function (body, res) {
         "company='" + body.company.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "', description ='" + body.description.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + 
         "', start ='" + body.start + "', end ='" + body.end + "',present =" + body.present + 
         " WHERE ind ='" + body.ind + "' AND email='" + body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "'";
-    console.log("sql :", sql);
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in update work_experience:", error.sqlMessage);
