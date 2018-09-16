@@ -22,7 +22,32 @@ exports.setEmployerInfo = function (body, res) {
 
     con.query(sql, (error, result, field) => {
         if (error) {
-            logger.log("error", "Error in checkUser", error.sqlMessage);
+            logger.log("error", "Error in setEmployerInfo", error.sqlMessage);
+            res.status(500).send(error.sqlMessage);
+        } else if (result) {
+            res.status(200).send(result.changedRows.toString());
+        }
+    });
+}
+
+
+exports.incrementProfileView = function (body, res) {
+    let sql = "UPDATE `skills` SET viewers = (viewers+1) where email = '" + body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "'";
+    con.query(sql, (error, result, field) => {
+        if (error) {
+            logger.log("error", "Error in incrementProfileView", error.sqlMessage);
+            res.status(500).send(error.sqlMessage);
+        } else if (result) {
+            res.status(200).send(result.changedRows.toString());
+        }
+    });
+}
+
+exports.incrementJobView = function (body, res) {
+    let sql = "UPDATE `openings` SET viewers = (viewers+1) where ind = " + body.ind;
+    con.query(sql, (error, result, field) => {
+        if (error) {
+            logger.log("error", "Error in incrementProfileView", error.sqlMessage);
             res.status(500).send(error.sqlMessage);
         } else if (result) {
             res.status(200).send(result.changedRows.toString());

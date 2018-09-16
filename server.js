@@ -120,6 +120,12 @@ try {
     .post('/updateRequirement', function (req, res) {
       operations.updateRequirement(req.body, res);
     })
+    .post('/incrementProfileView', function (req, res) {
+      operations.incrementProfileView(req.body, res);
+    })
+    .post('/incrementJobView', function (req, res) {
+      operations.incrementJobView(req.body, res);
+    })
     .post('/getSuperTables', function (req, res) {
       operations.getSuperTables(req.body,res);
     })
