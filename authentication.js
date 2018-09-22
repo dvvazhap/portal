@@ -137,7 +137,7 @@ exports.addUser = function (body, res) {
             }
             if (body.user_type == 2) { //employee
                 let a = {
-                    name: body.name.replace(/\\/g,'\\\\').replace(/'/g, "\\'"), email: body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'"), phone: "", looking: 0, fullTime: 1, partTime: 0, intern: 0, designation: "", fut_location: "", experience: 0,
+                    name: body.name.replace(/\\/g,'\\\\').replace(/'/g, "\\'"), email: body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'"), phone: "", looking: 1, fullTime: 1, partTime: 0, intern: 0, designation: "", fut_location: "", experience: 0,
                     noticePeriod: 0, skills: "", specificReq: "", gender: 'Male', viewers: 1, objective: "", languages: "", academic_ach: "", extra_curricular: "", certifications: "", hobbies: "", address: "", linkedin: ""
                 };
                 con.query("INSERT INTO `skills` SET ? ", a, (error1, result1, field1) => {
