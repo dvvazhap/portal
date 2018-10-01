@@ -23,13 +23,13 @@ exports.validateUser = function (email, req, res) {
 }
 
 exports.verifyUser = function (body, res) {
-    let sql = "SELECT v_profile from users where token = '" + body.token.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "' AND email = '" + body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "'";
+    let sql = "SELECT v_profile,token,user_type from users where token = '" + body.token.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "' AND email = '" + body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "'";
     con.query(sql, (error, result, field) => {
         if (error) {
             logger.log("error", "Error in verifyUser", error.sqlMessage);
             res.status(500).send(error.sqlMessage);
         } else if (result) {
-            if (result && result[0] && result[0].v_profile && result[0].v_profile == 1) res.status(200).send("verified");
+            if (result && result[0] && result[0].v_profile && result[0].v_profile == 1) res.status(200).send({"stat":"verified","t":result[0].token,"ut":result[0].user_type});
             else {
                 let sql1 = "UPDATE users SET v_profile=1 where token = '" + body.token.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "' AND v_profile = '" + body.code + "' AND email = '" + body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "'";
                 con.query(sql1, (error1, result1, field1) => {
@@ -37,7 +37,12 @@ exports.verifyUser = function (body, res) {
                         logger.log("error", "Error in verifyUser", error1.sqlMessage);
                         res.status(500).send(error1.sqlMessage);
                     } else if (result1) {
-                        res.status(200).send(result1.changedRows.toString());
+                        if(result1.changedRows === 1){
+                            res.status(200).send({"stat":"1","t":result[0].token,"ut":result[0].user_type});
+                        }else{
+                            res.status(200).send({"stat":"0"});
+                        }
+                        
                     }
                 });
             }
