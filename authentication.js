@@ -29,7 +29,8 @@ exports.verifyUser = function (body, res) {
             logger.log("error", "Error in verifyUser", error.sqlMessage);
             res.status(500).send(error.sqlMessage);
         } else if (result) {
-            if (result && result[0] && result[0].v_profile && result[0].v_profile == 1) res.status(200).send({"stat":"verified","t":result[0].token,"ut":result[0].user_type});
+            if (result && result[0] && result[0].v_profile && result[0].v_profile == 1) 
+                res.status(200).send({"stat":"1","t":result[0].token,"ut":result[0].user_type});
             else {
                 let sql1 = "UPDATE users SET v_profile=1 where token = '" + body.token.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "' AND v_profile = '" + body.code + "' AND email = '" + body.email.replace(/\\/g,'\\\\').replace(/'/g, "\\'") + "'";
                 con.query(sql1, (error1, result1, field1) => {
